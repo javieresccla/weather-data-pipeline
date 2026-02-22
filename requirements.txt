@@ -1,0 +1,11 @@
+# Extracción de datos
+requests==2.32.5
+
+# Base de datos
+psycopg2-binary==2.9.11
+
+# Variables de entorno
+python-dotenv==1.2.1
+
+# Orquestación
+prefect==3.6.18
