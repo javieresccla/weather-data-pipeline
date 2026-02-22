@@ -34,6 +34,28 @@ weather-data-pipeline/
     └── db/              # Database connection and allowed commands
 ```
 
+## 🚀 How to Run (Quickstart)
+
+This project includes a `Makefile` to simplify Docker commands and environment management, ensuring a smooth setup process.
+
+1. **Setup Environment Variables:**
+   Copy `.env.template` into your directory with name `.env` and fulfill it with the info requested. 
+
+2. **Run in Development Mode:**
+   Spins up the containers and runs the pipeline using local testing configurations (e.g., executing every minute).
+   ```bash
+   make dev
+   ```
+3. **Run in Production Mode:**
+   Runs final production config, such as executing every day at 7AM.
+   ```bash
+   make prod
+   ```
+4. **Gently stop the pipeline:**
+   Switching off the containers ensuring data reliability.
+   ```bash
+   make down
+   ```
 
 ## 🗺️ Project Roadmap
 * [x] Phase 1: Raw Ingestion (Bronze Layer)
