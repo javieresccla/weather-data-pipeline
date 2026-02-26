@@ -1,11 +1,14 @@
-# Extracción de datos
+# Api connection for data extraction
 requests==2.32.5
 
-# Base de datos
+# Data base management
 psycopg2-binary==2.9.11
 
-# Variables de entorno
+# Enviroment
 python-dotenv==1.2.1
 
-# Orquestación
+# Orchetration
 prefect==3.6.18
+
+# Database migrations
+yoyo-migrations
