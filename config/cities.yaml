@@ -1,0 +1,7 @@
+# Default cities for weather extraction.
+# Format: "CityName,CountryCode" (e.g. OpenWeather API uses this format).
+# Users can add more via the future front-end; these seed the DB on first run.
+cities:
+  - "Cordoba,ES"
+  - "Madrid,ES"
+  - "London,UK"

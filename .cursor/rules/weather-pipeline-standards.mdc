@@ -1,0 +1,79 @@
+---
+description: Weather Data Pipeline - technologies, architecture, and coding conventions
+alwaysApply: true
+---
+
+# Weather Data Pipeline - Project Rules
+
+## Technology Stack
+
+- **Python 3.12** (language)
+- **Prefect 3.x** (orchestration, flows, tasks)
+- **PostgreSQL 15** (database)
+- **Docker & Docker Compose** (infrastructure)
+- **yoyo-migrations** (schema migrations)
+- **python-dotenv** (environment configuration)
+
+## Architecture Principles
+
+### ELT over ETL
+Prefer ELT: extract raw data as-is, load into Bronze layer, transform later. Each source has its own format; transformations happen in Silver/Gold layers so data can be re-processed if sources change.
+
+### Medallion / Layered Architecture
+- **Bronze**: Raw ingestion (JSONB), schema `bronze.*`
+- **Silver**: Cleaned, normalized data (Phase 2), schema `silver.*`
+- **Gold**: Business views / API-ready data (Phase 4), schema `gold.*`
+
+### Modular Extraction
+Extractors inherit from `BaseELTJob` and implement `fetch_data()` and `get_name()`. New extractors are discovered via `BaseELTJob.__subclasses__()`—register them in `src/extraction/extractors/__init__.py`.
+
+## Project Structure
+
+```
+src/
+├── extraction/         # Extraction logic
+│   ├── base.py        # BaseELTJob ABC
+│   ├── main.py        # Prefect flow entry point
+│   └── extractors/    # One extractor per source
+└── db/                # Database connection and operations
+    ├── connection.py  # PostgresConnection context manager
+    └── insert_*.py    # Insert functions per layer
+migrations/            # SQL migrations (1_*.sql, 2_*.sql, ...)
+Makefile               # deploy, dev, prod, down
+```
+
+## Coding Conventions
+
+### Python
+- Use absolute imports for top-level (`src.extraction`, `src.db`), relative for within packages (`from ..base import BaseELTJob`).
+- Define `__all__` in packages and modules that export public APIs.
+- Load env via `load_dotenv()` at the entry point only (e.g. `main.py`).
+
+### Database
+- Use **parameterized queries** (`%s`) only—never f-strings for user/data in SQL. Table/schema names may use f-strings when static.
+- Use **context managers** for connections (`with PostgresConnection() as conn:`).
+- Store raw data as **JSONB**; use **TIMESTAMPTZ** and **UTC** for timestamps (`datetime.now(timezone.utc)`).
+- Migrations: sequential, prefixed numbers (`1_initial_schema.sql`, `2_create_cities_table.sql`).
+
+### Prefect
+- Use `@flow` for pipeline entry, `@task` for units of work.
+- Configure retries on tasks (`retries=3`, `retry_delay_seconds=10`).
+- Use `flow.serve()` with `name` and `cron` from env when running continuously.
+- Isolate failures: one extractor failing must not stop others (try/except per extractor).
+
+### Configuration
+- All secrets and env-specific values in `.env`; use `.env.template` as reference.
+- Makefile targets: `make dev`, `make prod`, `make down`, `make deploy`.
+
+## Adding New Extractors
+
+1. Create class in `src/extraction/extractors/<source>.py` inheriting `BaseELTJob`.
+2. Implement `fetch_data()` (returns raw dict/list) and `get_name()` (returns source name string).
+3. Add to `__all__` and import in `src/extraction/extractors/__init__.py`.
+4. No changes needed in `main.py`—discovery is automatic.
+
+## Docker Notes
+
+- `postgres_data` volume preserves data; `down` does not remove it.
+- ELT pipeline uses `POSTGRES_HOST: db` inside Docker.
+- Migrations run via `yoyo apply -b ./migrations` during `make deploy`.

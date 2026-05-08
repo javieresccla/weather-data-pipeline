@@ -5,3 +5,4 @@ docs/
 __pycache__/
 *.pyc
 test.json
+requieremts-dev.txt

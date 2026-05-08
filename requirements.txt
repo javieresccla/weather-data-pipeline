@@ -12,3 +12,6 @@ prefect==3.6.18
 
 # Database migrations
 yoyo-migrations
+
+# Config parsing
+PyYAML==6.0.2
