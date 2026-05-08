@@ -70,3 +70,13 @@ This project includes a `Makefile` to simplify Docker commands and environment m
 * [ ] Phase 4: Consumption (Gold Layer / API)
     * Creating materialized views for business value.
     * Developing a FastAPI endpoint to serve the structured data.
+
+## 🧠 What I Learned so far
+* Good practices in project organization. Using make to set up a quick start command.
+* Docker: This is the first time I build a hole proyect in docker from scratch. Even though I knew the basics, building the Dockerfile and more precisely the docker-compose made me fully comprehend the architecture.
+* Postgre as db engine: In my current job I always used MariaDB. I made my research on postgre, analysing it's pros and cons.
+* Data pipelines design basics: Even though there's many concepts to go deep in, this proyect allowed me to understand the importance of researching a field before diving into the desing. As an example, I was aware of ETL design, but discovered that for my use case ELT was the appropiate choice.
+
+## 🧐 Decisions Breakdown
+* ELT over ETL: In order to open the door for future re-processing of the data extracted from the API's, I think ELT is the correct choice. On top of that, this design pattern is the most accepted as of today. The reason, among others, is the allowance of a post-failure layer. The costs of storing the raw data in this proyect is not important enough (raw json's can be cheaply stored nowadays) to disregard ELT.
+* Building from ingestion to comsumption: Since this proyect is for personal development, I have no requirements on the final business value yet. This way, and maintaining clean code patterns (such us microservices and singleton), I will discover the value I can extract from the data in along the way.
