@@ -11,7 +11,7 @@ The main goal of this project is not only he implementation and real use of itse
 * **Language:** Python 3.12
 * **Orchestration:** Prefect 3.0
 * **Database:** PostgreSQL
-* **Infrasructure:** Docker & Docker Compose
+* **Infrastructure:** Docker
 
 ---
 
