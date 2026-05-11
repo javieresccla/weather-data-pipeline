@@ -15,7 +15,14 @@ The main goal of this project is not only he implementation and real use of itse
 
 ---
 
-## 🏗️ Structure
+## 🧩 System Design (Big Picture)
+
+![weaher_pipeline](https://github.com/user-attachments/assets/9dd78fac-c335-453b-ac49-745380e0b01b)
+
+> [!TIP]
+> [Ver documentación completa del diseño (Abrir en pestaña nueva)](https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=WEATHER%20PIPELINE.drawio&dark=auto#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1ROcOJSjC4S5rKkWD6iSRKcPMdJnKAa6g%26export%3Ddownload)
+
+## 🏗️ Code Structure
 
 This project follows a modular structure, segregating extraction logic, db connection and the structure config:
 
